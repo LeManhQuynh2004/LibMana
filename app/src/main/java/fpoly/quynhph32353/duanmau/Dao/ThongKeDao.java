@@ -29,11 +29,15 @@ public class ThongKeDao {
         SachDao sachDao = new SachDao(context);
         Cursor cursor = sqLiteDatabase.rawQuery(sql, null);
         if (cursor.getCount() > 0) {
-            Top top = new Top();
-            Sach sach = sachDao.selectID(cursor.getString(cursor.getColumnIndexOrThrow("maSach")));
-            top.tenSach = sach.getTenSach();
-            top.soLuong = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("soLuong")));
-            list.add(top);
+            cursor.moveToFirst();
+            do {
+                Top top = new Top();
+                Sach sach = sachDao.selectID(cursor.getString(cursor.getColumnIndexOrThrow("maSach")));
+                top.tenSach = sach.getTenSach();
+                top.soLuong = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("soLuong")));
+                list.add(top);
+            }while (cursor.moveToNext());
+
         }
         return list;
     }

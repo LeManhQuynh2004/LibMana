@@ -5,9 +5,8 @@
     android:layout_height="match_parent"
     tools:context=".Fragment.QlTheLoaiFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/RecyclerView_TheLoai"
-        android:padding="5dp"
+    <ListView
+        android:id="@+id/ListView_TheLoai"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

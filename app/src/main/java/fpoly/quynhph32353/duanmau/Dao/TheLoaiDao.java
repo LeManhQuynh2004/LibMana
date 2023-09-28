@@ -26,6 +26,7 @@ public class TheLoaiDao {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_TEN_LOAI, obj.getTenLoai());
         long check = sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
+        obj.setMaLoai((int) check);
         return check != -1;
     }
 

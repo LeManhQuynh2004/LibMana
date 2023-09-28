@@ -75,7 +75,7 @@ public class ThuThuDao {
     }
 
     public ThuThu SelectID(String id) {
-        String sql = "SELECT * FROM Sach WHERE id = ?";
+        String sql = "SELECT * FROM ThuThu WHERE maTT = ?";
         ArrayList<ThuThu> list = getAll(sql, id);
         return list.get(0);
     }

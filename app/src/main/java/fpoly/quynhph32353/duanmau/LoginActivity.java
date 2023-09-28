@@ -26,19 +26,22 @@ public class LoginActivity extends AppCompatActivity {
         edtPassWord = findViewById(R.id.edtPassword);
         chkRememberPass = findViewById(R.id.chkRememberPass);
         thuThuDao = new ThuThuDao(this);
-
-        SharedPreferences sharedPreferences = getSharedPreferences("LIST_USER",MODE_PRIVATE);
-        edtUserName.setText(sharedPreferences.getString("USERNAME",""));
-        edtPassWord.setText(sharedPreferences.getString("PASSWORD",""));
-        chkRememberPass.setChecked(sharedPreferences.getBoolean("REMEMBER",false));
-
+        ReadFile();
         findViewById(R.id.btnLogin).setOnClickListener(v -> {
             CheckLogin();
         });
         findViewById(R.id.btnCancel).setOnClickListener(v -> {
             edtUserName.setText("");
             edtPassWord.setText("");
+            chkRememberPass.setChecked(false);
         });
+    }
+
+    private void ReadFile() {
+        SharedPreferences sharedPreferences = getSharedPreferences("LIST_USER",MODE_PRIVATE);
+        edtUserName.setText(sharedPreferences.getString("USERNAME",""));
+        edtPassWord.setText(sharedPreferences.getString("PASSWORD",""));
+        chkRememberPass.setChecked(sharedPreferences.getBoolean("REMEMBER",false));
     }
 
     private void CheckLogin() {

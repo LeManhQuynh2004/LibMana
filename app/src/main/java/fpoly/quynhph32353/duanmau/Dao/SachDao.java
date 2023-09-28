@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import fpoly.quynhph32353.duanmau.Database.Db_Helper;
 import fpoly.quynhph32353.duanmau.Model.Sach;
+import fpoly.quynhph32353.duanmau.Model.ThanhVien;
 import fpoly.quynhph32353.duanmau.Model.TheLoai;
 
 public class SachDao {
@@ -27,10 +28,11 @@ public class SachDao {
     public boolean insertData(Sach obj) {
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_MA_SACH, obj.getMaLoai());
+        contentValues.put(COLUMN_MA_LOAI, obj.getMaLoai());
         contentValues.put(COLUMN_TEN_SACH, obj.getTenSach());
         contentValues.put(COLUMN_GIA_THUE, obj.getGiaThue());
         long check = sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
+        obj.setMaSach((int) check);
         return check != -1;
     }
 
@@ -45,26 +47,34 @@ public class SachDao {
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
         String dk[] = {String.valueOf(obj.getMaSach())};
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_MA_SACH, obj.getMaLoai());
+        contentValues.put(COLUMN_MA_LOAI, obj.getMaLoai());
         contentValues.put(COLUMN_TEN_SACH, obj.getTenSach());
         contentValues.put(COLUMN_GIA_THUE, obj.getGiaThue());
         long check = sqLiteDatabase.update(TABLE_NAME, contentValues, COLUMN_MA_SACH + "=?", dk);
         return check != -1;
     }
 
+
     private ArrayList<Sach> getAll(String sql, String... selectionArgs) {
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
         ArrayList<Sach> list = new ArrayList<>();
         Cursor cursor = sqLiteDatabase.rawQuery(sql, selectionArgs);
         if (cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            do {
+//            cursor.moveToFirst();
+//            do {
+//                int maSach = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_MA_SACH));
+//                String tenSach = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TEN_SACH));
+//                int giaThue = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_GIA_THUE));
+//                int maLoai = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_MA_LOAI));
+//                list.add(new Sach(maSach, tenSach, giaThue, maLoai));
+//            } while (cursor.moveToNext());
+            while (cursor.moveToNext()) {
                 int maSach = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_MA_SACH));
                 String tenSach = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TEN_SACH));
                 int giaThue = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_GIA_THUE));
                 int maLoai = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_MA_LOAI));
                 list.add(new Sach(maSach, tenSach, giaThue, maLoai));
-            } while (cursor.moveToNext());
+            }
         }
         return list;
     }
@@ -74,9 +84,19 @@ public class SachDao {
         return getAll(sql);
     }
 
+//    public Sach selectID(String id) {
+//        String sql = "SELECT * FROM Sach WHERE maSach = ?";
+//        ArrayList<Sach> list = getAll(sql, id);
+//        return list.get(0);
+//    }
     public Sach selectID(String id) {
-        String sql = "SELECT * FROM Sach WHERE id = ?";
+        String sql = "SELECT * FROM Sach WHERE maSach = ?";
         ArrayList<Sach> list = getAll(sql, id);
-        return list.get(0);
+
+        if (!list.isEmpty()) {
+            return list.get(0);
+        } else {
+            return null;
+        }
     }
 }

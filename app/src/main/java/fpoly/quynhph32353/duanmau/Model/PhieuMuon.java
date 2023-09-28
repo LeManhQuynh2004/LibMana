@@ -9,12 +9,12 @@ public class PhieuMuon {
     private int maSach;
     private int tienThue;
     private int traSach;
-    private Date ngay;
+    private String ngay;
 
     public PhieuMuon() {
     }
 
-    public PhieuMuon(int maPM, String maTT, int maTV, int maSach, int tienThue, int traSach, Date ngay) {
+    public PhieuMuon(int maPM, String maTT, int maTV, int maSach, int tienThue, int traSach, String ngay) {
         this.maPM = maPM;
         this.maTT = maTT;
         this.maTV = maTV;
@@ -72,11 +72,11 @@ public class PhieuMuon {
         this.traSach = traSach;
     }
 
-    public Date getNgay() {
+    public String getNgay() {
         return ngay;
     }
 
-    public void setNgay(Date ngay) {
+    public void setNgay(String ngay) {
         this.ngay = ngay;
     }
 }

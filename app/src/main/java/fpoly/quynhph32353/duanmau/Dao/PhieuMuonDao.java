@@ -40,12 +40,15 @@ public class PhieuMuonDao {
         contentValues.put(COLUMN_MA_THU_THU, obj.getMaTT());
         contentValues.put(COLUMN_MA_THANH_VIEN, obj.getMaTV());
         contentValues.put(COLUMN_MA_SACH, obj.getMaSach());
-        contentValues.put(COLUMN_NGAY, obj.getNgay().getTime());
+        contentValues.put(COLUMN_NGAY,String.valueOf(obj.getNgay()));
         contentValues.put(COLUMN_GIA_THUE, obj.getTienThue());
         contentValues.put(COLUMN_TRA_SACH, obj.getTraSach());
+
         long check = sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
+
         return check != -1;
     }
+
 
     public boolean delete(PhieuMuon obj) {
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
@@ -61,7 +64,7 @@ public class PhieuMuonDao {
         contentValues.put(COLUMN_MA_THU_THU, obj.getMaTT());
         contentValues.put(COLUMN_MA_THANH_VIEN, obj.getMaTV());
         contentValues.put(COLUMN_MA_SACH, obj.getMaSach());
-        contentValues.put(COLUMN_NGAY, obj.getNgay().getTime());
+        contentValues.put(COLUMN_NGAY, String.valueOf(obj.getNgay()));
         contentValues.put(COLUMN_GIA_THUE, obj.getTienThue());
         contentValues.put(COLUMN_TRA_SACH, obj.getTraSach());
         long check = sqLiteDatabase.update(TABLE_NAME, contentValues, COLUMN_MA_PHIEU_MUON + "=?", dk);
@@ -81,10 +84,9 @@ public class PhieuMuonDao {
                 String maTT = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_MA_THU_THU));
                 int tienThue = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_GIA_THUE));
                 int traSach = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_TRA_SACH));
-                long ngayMillis = cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_NGAY));
-                Date ngay = new Date(ngayMillis);
+                String ngay = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NGAY));
 
-                PhieuMuon phieuMuon = new PhieuMuon(maPM, maTT, maSach, maTV, tienThue, traSach, ngay);
+                PhieuMuon phieuMuon = new PhieuMuon(maPM, maTT,maTV,maSach, tienThue, traSach, ngay);
                 list.add(phieuMuon);
             } while (cursor.moveToNext());
         }
@@ -98,7 +100,7 @@ public class PhieuMuonDao {
         return getAll(sql);
     }
     public PhieuMuon selectID(String id) {
-        String sql = "SELECT * FROM TheLoai WHERE id = ?";
+        String sql = "SELECT * FROM PhieuMuon WHERE id = ?";
         ArrayList<PhieuMuon> list = getAll(sql, id);
         return list.get(0);
     }

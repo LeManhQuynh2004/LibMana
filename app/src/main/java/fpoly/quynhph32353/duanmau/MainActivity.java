@@ -15,15 +15,14 @@ import android.widget.TextView;
 import com.google.android.material.navigation.NavigationView;
 
 import fpoly.quynhph32353.duanmau.Dao.ThuThuDao;
-import fpoly.quynhph32353.duanmau.Fragment.QlNhanVienFragment;
+import fpoly.quynhph32353.duanmau.Fragment.QlThanhVienFragment;
 import fpoly.quynhph32353.duanmau.Fragment.QlPhieuMuonFragment;
 import fpoly.quynhph32353.duanmau.Fragment.QlSachFragment;
 import fpoly.quynhph32353.duanmau.Fragment.QlTheLoaiFragment;
-import fpoly.quynhph32353.duanmau.Fragment.RePassWord;
+import fpoly.quynhph32353.duanmau.Fragment.ChangePassWordFragment;
 import fpoly.quynhph32353.duanmau.Fragment.TKDoanhSo_Fragment;
 import fpoly.quynhph32353.duanmau.Fragment.ThemNguoiDungFragment;
 import fpoly.quynhph32353.duanmau.Fragment.TkTop10Fragment;
-import fpoly.quynhph32353.duanmau.Model.ThuThu;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,17 +52,20 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle.setDrawerIndicatorEnabled(true);
         drawerToggle.syncState();
         drawerLayout.addDrawerListener(drawerToggle);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new QlTheLoaiFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new QlPhieuMuonFragment()).commit();
         Intent intent = getIntent();
         String user = intent.getStringExtra("username");
 //        ThuThu thuThu = thuThuDao.SelectID(user);
 //        String username = thuThu.getHoTen();
         txt_user = navigationView.getHeaderView(0).findViewById(R.id.txt_HeaderTextView);
-        txt_user.setText("WelCome" + user);
+        txt_user.setText("WelCome " + user);
 
-        if (user.equalsIgnoreCase("admin")) {
-            navigationView.getMenu().findItem(R.id.menu_them_nguoi_dung).setVisible(true);
+        if(user != null){
+            if (!user.equalsIgnoreCase("admin")) {
+                navigationView.getMenu().findItem(R.id.menu_them_nguoi_dung).setVisible(false);
+            }
         }
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -80,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                     fragment = new QlSachFragment();
                     title = "Quản lý sách";
                 } else if (position == R.id.menu_ql_thanhVien) {
-                    fragment = new QlNhanVienFragment();
+                    fragment = new QlThanhVienFragment();
                     title = "Quản lý nhân viên";
                 } else if (position == R.id.menu_tk_top10) {
                     fragment = new TkTop10Fragment();
@@ -92,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                     fragment = new ThemNguoiDungFragment();
                     title = "Thêm người dùng";
                 } else if (position == R.id.menu_doi_mat_khau) {
-                    fragment = new RePassWord();
+                    fragment = new ChangePassWordFragment();
                     title = "Đổi mật khẩu";
                 } else {
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));

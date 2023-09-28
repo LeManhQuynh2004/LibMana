@@ -6,6 +6,9 @@ public class Sach {
     private int giaThue;
     private int maLoai;
 
+    public Sach() {
+    }
+
     public Sach(int maSach, String tenSach, int giaThue, int maLoai) {
         this.maSach = maSach;
         this.tenSach = tenSach;

@@ -5,6 +5,9 @@ public class ThanhVien {
     private String hoTen;
     private String namSinh;
 
+    public ThanhVien() {
+    }
+
     public ThanhVien(int maTV, String hoTen, String namSinh) {
         this.maTV = maTV;
         this.hoTen = hoTen;
