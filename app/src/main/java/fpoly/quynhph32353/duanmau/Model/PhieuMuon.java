@@ -1,7 +1,5 @@
 package fpoly.quynhph32353.duanmau.Model;
 
-import java.util.Date;
-
 public class PhieuMuon {
     private int maPM;
     private String maTT;

@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import fpoly.quynhph32353.duanmau.Model.ThanhVien;
 import fpoly.quynhph32353.duanmau.R;

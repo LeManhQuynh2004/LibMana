@@ -18,59 +18,68 @@ import fpoly.quynhph32353.duanmau.R;
 
 public class ChangePassWordFragment extends Fragment {
     View view;
-    EditText edt_oldPass, edt_newPass, edt_rePass;
+    EditText edt_passWordOld, edt_passWordNew, edt_confirmPassWord;
+    private boolean isChuoi(String str) {
+        return str.matches("[a-zA-Z0-9]+");
+    }
     SharedPreferences sharedPreferences;
     ThuThuDao thuThuDao;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_re_pass_word, container, false);
+        edt_passWordOld = view.findViewById(R.id.edtOldPassword);
+        edt_passWordNew = view.findViewById(R.id.edtnewPassword);
+        edt_confirmPassWord = view.findViewById(R.id.edtRePassword);
         thuThuDao = new ThuThuDao(getContext());
-        sharedPreferences = getActivity().getSharedPreferences("LIST_USER", Context.MODE_PRIVATE);
-        edt_oldPass = view.findViewById(R.id.edtOldPassword);
-        edt_newPass = view.findViewById(R.id.edtnewPassword);
-        edt_rePass = view.findViewById(R.id.edtRePassword);
-        view.findViewById(R.id.btnCancle_changePass).setOnClickListener(v -> {
-            resetEditText();
-        });
+        sharedPreferences = getContext().getSharedPreferences("LIST_USER", Context.MODE_PRIVATE);
         view.findViewById(R.id.btnSave_changePass).setOnClickListener(v -> {
-            String user = sharedPreferences.getString("USERNAME", "");
-            if (Validate()) {
-                ThuThu thuThu = thuThuDao.SelectID(user);
-                thuThu.setMatKhau(edt_newPass.getText().toString().trim());
+            String passWordOld = edt_passWordOld.getText().toString().trim();
+            String passWordNew = edt_passWordNew.getText().toString().trim();
+            String RePassWord = edt_confirmPassWord.getText().toString().trim();
+            if (validate(passWordOld, passWordNew, RePassWord)) {
+                String userName = sharedPreferences.getString("USERNAME", "");
+                ThuThu thuThu = thuThuDao.SelectID(userName);
+                thuThu.setMatKhau(passWordNew);
                 if (thuThuDao.updatePass(thuThu)) {
-                    Toast.makeText(getContext(), "Thay đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
-                    resetEditText();
+                    Toast.makeText(getContext(), "Thay đổi thành công ", Toast.LENGTH_SHORT).show();
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("PASSWORD", passWordNew);
+                    editor.apply();
+                    clearFrom();
                 } else {
-                    Toast.makeText(getContext(), "Thay đổi mật khẩu thất bại", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Thay đổi thất bại", Toast.LENGTH_SHORT).show();
                 }
             }
+        });
+        view.findViewById(R.id.btnCancle_changePass).setOnClickListener(v -> {
+            clearFrom();
         });
         return view;
     }
 
-    public void resetEditText() {
-        edt_oldPass.setText("");
-        edt_newPass.setText("");
-        edt_rePass.setText("");
+    private void clearFrom() {
+        edt_passWordNew.setText("");
+        edt_passWordOld.setText("");
+        edt_confirmPassWord.setText("");
     }
 
-    public boolean Validate() {
-        boolean check = true;
-        String old_pass = edt_oldPass.getText().toString().trim();
-        String new_pass = edt_newPass.getText().toString().trim();
-        String re_pass = edt_rePass.getText().toString().trim();
-        if (old_pass.isEmpty() || new_pass.isEmpty() || re_pass.isEmpty()) {
-            Toast.makeText(getContext(), "Quý khách vui lòng cung cấp đủ thông tin", Toast.LENGTH_SHORT).show();
+    private boolean validate(String passWordOld, String passWordNew, String rePassWord) {
+        if (passWordOld.isEmpty() || passWordNew.isEmpty() || rePassWord.isEmpty()) {
+            Toast.makeText(getContext(), "Vui lòng không bỏ trống", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (!isChuoi(passWordOld) || !isChuoi(passWordNew) || !isChuoi(rePassWord)) {
+            Toast.makeText(getContext(), "Nhập sai định dạng", Toast.LENGTH_SHORT).show();
             return false;
         } else {
-            String Pass_old = sharedPreferences.getString("PASSWORD", "");
-            if (!old_pass.equals(Pass_old)) {
-                Toast.makeText(getContext(), "Mật khẩu cũ không chính sác", Toast.LENGTH_SHORT).show();
+            String pass_Old = sharedPreferences.getString("PASSWORD", "");
+            if (!passWordOld.equals(pass_Old)) {
+                Toast.makeText(getContext(), "Mật khẩu cũ không đúng", Toast.LENGTH_SHORT).show();
                 return false;
             }
-            if (!new_pass.equals(re_pass)) {
+            if (!passWordNew.equals(rePassWord)) {
                 Toast.makeText(getContext(), "Mật khẩu không trùng khớp", Toast.LENGTH_SHORT).show();
                 return false;
             }

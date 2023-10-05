@@ -25,6 +25,9 @@ public class Db_Helper extends SQLiteOpenHelper {
                 "matKhau TEXT NOT NULL)";
         db.execSQL(createTableThuThu);
 
+        String insertDefaultThuThu = "INSERT INTO ThuThu (maTT, hoTen, matKhau) VALUES ('admin', 'admin', 'admin')";
+        db.execSQL(insertDefaultThuThu);
+
         // Tạo bảng thành viên
         String createTableThanhVien = "CREATE TABLE ThanhVien (" +
                 "maTV INTEGER PRIMARY KEY AUTOINCREMENT, " +

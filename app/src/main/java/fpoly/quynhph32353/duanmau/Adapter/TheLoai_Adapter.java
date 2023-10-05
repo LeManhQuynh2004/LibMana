@@ -2,6 +2,7 @@ package fpoly.quynhph32353.duanmau.Adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,70 +14,75 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import java.util.ArrayList;
 
-import fpoly.quynhph32353.duanmau.Dao.ThanhVienDao;
+import fpoly.quynhph32353.duanmau.Dao.TheLoaiDao;
 import fpoly.quynhph32353.duanmau.Interface.ItemClickListener;
-import fpoly.quynhph32353.duanmau.Model.ThanhVien;
+import fpoly.quynhph32353.duanmau.Model.TheLoai;
 import fpoly.quynhph32353.duanmau.R;
 
-public class ThanhVienAdapter extends RecyclerView.Adapter<ThanhVienAdapter.ThanhVienViewHolder> {
+public class TheLoai_Adapter extends RecyclerView.Adapter<TheLoai_Adapter.TheLoaiViewHolder> {
     Context context;
-    ArrayList<ThanhVien> list;
+    ArrayList<TheLoai> list;
 
-    ThanhVienDao thanhVienDao;
+    private ItemClickListener itemClickListener;
 
-    public ItemClickListener itemClickListener;
+    TheLoaiDao theLoaiDao;
+
+    private static final String TAG = "TheLoai_Adapter";
 
     public void setItemClickListener(ItemClickListener listener) {
         this.itemClickListener = listener;
     }
 
-    public ThanhVienAdapter(Context context, ArrayList<ThanhVien> list) {
-        thanhVienDao = new ThanhVienDao(context);
+
+    public TheLoai_Adapter(Context context, ArrayList<TheLoai> list) {
         this.context = context;
         this.list = list;
+        theLoaiDao = new TheLoaiDao(context);
     }
 
     @NonNull
     @Override
-    public ThanhVienViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_thanhvien, parent, false);
-        return new ThanhVienViewHolder(view);
+    public TheLoaiViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_theloai, parent, false);
+        return new TheLoaiViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ThanhVienViewHolder holder, int position) {
-        ThanhVien thanhVien = list.get(position);
-        if (thanhVien != null) {
-            holder.txt_hoTen.setText("Họ tên :" + thanhVien.getHoTen());
-            holder.txt_maTV.setText("Mã TV :" + thanhVien.getMaTV());
-            holder.txt_namSinh.setText("Năm sinh :" + thanhVien.getNamSinh());
-        }
-        holder.img_Delete_ThanhVien.setOnClickListener(v -> {
-            showDeleteDialog(position);
-        });
+    public void onBindViewHolder(@NonNull TheLoaiViewHolder holder, int position) {
         holder.itemView.setOnLongClickListener(v -> {
-            if(itemClickListener != null){
-                itemClickListener.UpdateItem(position);
+            try {
+                if (itemClickListener != null) {
+                    itemClickListener.UpdateItem(position);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "onBindViewHolder: " + e);
             }
             return false;
         });
+        holder.txt_maLoai.setText("Mã loại :" + list.get(position).getMaLoai());
+        holder.txt_ten_loai.setText("Tên loại :" + list.get(position).getTenLoai());
+        holder.imgDelete.setOnClickListener(v -> {
+            showDeleteDialog(position);
+        });
     }
 
+
     public void showDeleteDialog(int position) {
-        ThanhVien thanhVien = list.get(position);
+        TheLoai theLoai = list.get(position);
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setIcon(R.drawable.baseline_warning_amber_24);
         builder.setTitle("Thông báo");
-        builder.setMessage("Bạn có chắc chắn muốn xóa thành viên " + thanhVien.getHoTen() + " không ?");
+        builder.setMessage("Bạn có chắc chắn muốn xóa " + theLoai.getTenLoai() + " không ?");
         builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 try {
-                    if (thanhVienDao.Delete(thanhVien)) {
+                    if (theLoaiDao.Delete(theLoai)) {
                         Toast.makeText(context, R.string.delete_success, Toast.LENGTH_SHORT).show();
-                        list.remove(thanhVien);
+                        list.remove(theLoai);
                         notifyItemChanged(position);
                         notifyItemRemoved(position);
                     } else {
@@ -96,18 +102,16 @@ public class ThanhVienAdapter extends RecyclerView.Adapter<ThanhVienAdapter.Than
         return list.size();
     }
 
-    class ThanhVienViewHolder extends RecyclerView.ViewHolder {
+    class TheLoaiViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txt_hoTen, txt_maTV, txt_namSinh;
+        TextView txt_maLoai, txt_ten_loai;
+        ImageView imgDelete;
 
-        ImageView img_Delete_ThanhVien;
-
-        public ThanhVienViewHolder(@NonNull View itemView) {
+        public TheLoaiViewHolder(@NonNull View itemView) {
             super(itemView);
-            txt_hoTen = itemView.findViewById(R.id.txt_hoTen_item_thanhvien);
-            txt_namSinh = itemView.findViewById(R.id.txt_namsinh_item_thanhvien);
-            txt_maTV = itemView.findViewById(R.id.txt_maTV_item_thanhvien);
-            img_Delete_ThanhVien = itemView.findViewById(R.id.imgDelete_thanhVien);
+            txt_maLoai = itemView.findViewById(R.id.txt_maLoai_item);
+            txt_ten_loai = itemView.findViewById(R.id.txt_tenLoai_item);
+            imgDelete = itemView.findViewById(R.id.imgDelete_theLoai);
         }
     }
 }

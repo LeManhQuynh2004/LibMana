@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 
 import fpoly.quynhph32353.duanmau.Database.Db_Helper;
-import fpoly.quynhph32353.duanmau.Model.Sach;
 import fpoly.quynhph32353.duanmau.Model.ThuThu;
 
 public class ThuThuDao {
@@ -40,6 +39,15 @@ public class ThuThuDao {
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
         String dk[] = {obj.getMaTT()};
         long check = sqLiteDatabase.delete(TABLE_NAME, COLUMN_MATT + "= ?", dk);
+        return check != -1;
+    }
+    public boolean update(ThuThu obj) {
+        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_HO_TEN, obj.getHoTen());
+        contentValues.put(COLUMN_MATKHAU, obj.getMatKhau());
+        String dk[] = {obj.getMaTT()};
+        long check = sqLiteDatabase.update(TABLE_NAME,contentValues,COLUMN_MATT + "= ?", dk);
         return check != -1;
     }
 

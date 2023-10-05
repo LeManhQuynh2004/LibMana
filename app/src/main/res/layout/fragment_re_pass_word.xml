@@ -10,7 +10,7 @@
     tools:context=".Fragment.ChangePassWordFragment">
 
     <ImageView
-        android:src="@drawable/baseline_vpn_key_24"
+        android:src="@drawable/reset_password"
         android:layout_marginBottom="20dp"
         android:layout_width="match_parent"
         android:layout_height="200dp"/>

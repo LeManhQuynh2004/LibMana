@@ -16,6 +16,11 @@
         android:id="@+id/menu_ql_thanhVien"
         android:icon="@drawable/baseline_people"
         android:title="Quản lý thành viên" />
+
+    <item
+        android:id="@+id/menu_ql_thuThu"
+        android:icon="@drawable/outline_person_24"
+        android:title="Quản lý Thủ Thư" />
     <group android:checkableBehavior="single">
         <item android:title="Thống kê">
             <menu>

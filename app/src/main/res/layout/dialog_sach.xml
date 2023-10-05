@@ -30,24 +30,24 @@
             android:padding="@dimen/padding_10dp">
 
             <EditText
-                android:id="@+id/edt_maSach"
+                android:id="@+id/edt_maSach_dialog_sach"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Mã số" />
 
             <EditText
-                android:id="@+id/edt_tenSach"
+                android:id="@+id/edt_tenSach_dialog_sach"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Họ Tên" />
 
             <EditText
-                android:id="@+id/edt_giaSach"
+                android:id="@+id/edt_giaSach_dialog_sach"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Gía thuê" />
             <Spinner
-                android:id="@+id/Spinner_TheLoai"
+                android:id="@+id/spinner_TheLoai_dialog_sach"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/padding_10dp"/>

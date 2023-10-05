@@ -9,8 +9,6 @@ import java.util.ArrayList;
 
 import fpoly.quynhph32353.duanmau.Database.Db_Helper;
 import fpoly.quynhph32353.duanmau.Model.Sach;
-import fpoly.quynhph32353.duanmau.Model.ThanhVien;
-import fpoly.quynhph32353.duanmau.Model.TheLoai;
 
 public class SachDao {
     Db_Helper dbHelper;

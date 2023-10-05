@@ -15,10 +15,9 @@ import fpoly.quynhph32353.duanmau.Model.ThuThu;
 import fpoly.quynhph32353.duanmau.R;
 
 public class ThemNguoiDungFragment extends Fragment {
-
     View view;
 
-    EditText edt_username,edt_hoTen,edt_password;
+    EditText edt_username, edt_hoTen, edt_password;
 
     ThuThuDao thuThuDao;
 
@@ -35,20 +34,34 @@ public class ThemNguoiDungFragment extends Fragment {
             String username = edt_username.getText().toString().trim();
             String hoTen = edt_hoTen.getText().toString().trim();
             String password = edt_password.getText().toString().trim();
-            ThuThu thuThu = new ThuThu(username,hoTen,password);
-            if(thuThuDao.insertData(thuThu)){
-                Toast.makeText(getContext(), "Thêm thành công", Toast.LENGTH_SHORT).show();
-                resetEditText();
-            }else{
-                Toast.makeText(getContext(), "Thêm thất bại", Toast.LENGTH_SHORT).show();
+
+            if (validate(username, password, hoTen)) {
+                ThuThu thuThu = new ThuThu(username, hoTen, password);
+                if (thuThuDao.insertData(thuThu)) {
+                    Toast.makeText(getContext(), "Thêm thành công", Toast.LENGTH_SHORT).show();
+                    resetEditText();
+                } else {
+                    Toast.makeText(getContext(), "Thêm thất bại", Toast.LENGTH_SHORT).show();
+                }
             }
+        });
+        view.findViewById(R.id.btnCancle_addTT).setOnClickListener(v -> {
+            resetEditText();
         });
         return view;
     }
+
+    private boolean validate(String username, String password, String hoTen) {
+        if (username.isEmpty() || password.isEmpty() || hoTen.isEmpty()) {
+            Toast.makeText(getContext(), "Vui lòng cung cấp đủ thông tin", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
     public void resetEditText() {
         edt_username.setText("");
         edt_hoTen.setText("");
         edt_password.setText("");
     }
-
 }

@@ -5,10 +5,11 @@
     android:layout_height="match_parent"
     tools:context=".Fragment.QlPhieuMuonFragment">
 
-    <ListView
-        android:id="@+id/ListView_PhieuMuon"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RecyclerView_PhieuMuon"
+        android:padding="@dimen/padding_5dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_phieuMuon"

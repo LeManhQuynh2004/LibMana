@@ -41,17 +41,16 @@ public class TheLoaiSpinner extends BaseAdapter {
         TextView txt_tenSach;
     }
 
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         TheLoaiViewHolder viewHolder;
-        if(convertView == null){
+        if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_theloai_spinner, parent, false);
             viewHolder = new TheLoaiViewHolder();
             viewHolder.txt_maLoai = convertView.findViewById(R.id.txt_MaLoai_Spinner);
             viewHolder.txt_tenSach = convertView.findViewById(R.id.txt_tenLoai_Spinner);
             convertView.setTag(viewHolder);
-        }else{
+        } else {
             viewHolder = (TheLoaiViewHolder) convertView.getTag();
         }
         TheLoai theLoai = list.get(position);

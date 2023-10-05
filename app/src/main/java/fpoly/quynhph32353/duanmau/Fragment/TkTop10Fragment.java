@@ -31,7 +31,7 @@ public class TkTop10Fragment extends Fragment {
         listView = view.findViewById(R.id.ListView_Top10);
         thongKeDao = new ThongKeDao(getContext());
         list = thongKeDao.getTop();
-        top10Adapter = new Top10Adapter(getContext(),list);
+        top10Adapter = new Top10Adapter(getContext(), list);
         listView.setAdapter(top10Adapter);
         return view;
     }

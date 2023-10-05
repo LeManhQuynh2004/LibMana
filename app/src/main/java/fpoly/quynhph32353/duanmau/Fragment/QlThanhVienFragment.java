@@ -10,126 +10,151 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import fpoly.quynhph32353.duanmau.Adapter.ThanhVienAdapter;
 import fpoly.quynhph32353.duanmau.Dao.ThanhVienDao;
+import fpoly.quynhph32353.duanmau.Interface.ItemClickListener;
 import fpoly.quynhph32353.duanmau.Model.ThanhVien;
 import fpoly.quynhph32353.duanmau.R;
 
 public class QlThanhVienFragment extends Fragment {
 
-    private View view;
-    private RecyclerView recyclerView;
+    View view;
 
-    ListView listView;
-    private EditText edt_maNV, edt_hoTen, edt_namSinh;
+    RecyclerView recyclerView;
 
-    private ThanhVienDao thanhVienDao;
-    private ThanhVienAdapter thanhVienAdapter;
-    private ArrayList<ThanhVien> list = new ArrayList<>();
+    ThanhVienDao thanhVienDao;
+
+    EditText edt_hoten, edt_maTV, edt_namsinh;
+
+    String strHoten, strNamSinh;
+
+    ArrayList<ThanhVien> list = new ArrayList<>();
+
+    ThanhVienAdapter thanhVienAdapter;
+
+    private static final String TAG = "QlThanhVien";
+
+    public boolean isChuoi(String str) {
+        return str.matches("[a-z A-Z 0-9]+");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_ql_nhan_vien, container, false);
-//        recyclerView = view.findViewById(R.id.RecyclerView_NhanVien);
-        listView = view.findViewById(R.id.ListView_ThanhVien);
+        // Inflate the layout for this fragment
+        view = inflater.inflate(R.layout.fragment_ql_thanhvien, container, false);
+        recyclerView = view.findViewById(R.id.RecyclerView_ThanhVien);
         thanhVienDao = new ThanhVienDao(getContext());
-        list.addAll(thanhVienDao.selectAll());
-
+        list = thanhVienDao.selectAll();
         thanhVienAdapter = new ThanhVienAdapter(getContext(), list);
-
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//        recyclerView.setAdapter(thanhVienAdapter);
-        listView.setAdapter(thanhVienAdapter);
-
-        view.findViewById(R.id.fab_NhanVien).setOnClickListener(v -> {
-            showAddOrEditDialog(getContext(), 0, null);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(thanhVienAdapter);
+        view.findViewById(R.id.fab_ThanhVien).setOnClickListener(v -> {
+            showAddOrUpdateDialog(getContext(), 0, null);
         });
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        thanhVienAdapter.setItemClickListener(new ItemClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                showAddOrEditDialog(getContext(), 1, list.get(position));
-                return false;
+            public void UpdateItem(int position) {
+                ThanhVien thanhVien = list.get(position);
+                showAddOrUpdateDialog(getContext(), 1, thanhVien);
             }
         });
         return view;
     }
 
-    protected void showAddOrEditDialog(Context context, int type, ThanhVien thanhVien) {
+    public void showAddOrUpdateDialog(Context context, int type, ThanhVien thanhVien) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View view1 = LayoutInflater.from(context).inflate(R.layout.dialog_thanhvien, null);
         builder.setView(view1);
         AlertDialog alertDialog = builder.create();
-
-        edt_maNV = view1.findViewById(R.id.edt_maNV);
-        edt_hoTen = view1.findViewById(R.id.edt_hoTen);
-        edt_namSinh = view1.findViewById(R.id.edt_namSinh);
-        edt_maNV.setEnabled(false);
-
-
-
+        edt_maTV = view1.findViewById(R.id.edt_maTV_thanhvien_dialog);
+        edt_hoten = view1.findViewById(R.id.edt_hoTen_thanhvien_dialog);
+        edt_namsinh = view1.findViewById(R.id.edt_namSinh_thanhvien_dialog);
+        edt_maTV.setEnabled(false);
         if (type != 0) {
-            edt_maNV.setText(String.valueOf(thanhVien.getMaTV()));
-            edt_hoTen.setText(thanhVien.getHoTen());
-            edt_namSinh.setText(thanhVien.getNamSinh());
+            if (thanhVien != null) {
+                edt_maTV.setText(String.valueOf(thanhVien.getMaTV()));
+                edt_hoten.setText(thanhVien.getHoTen());
+                edt_namsinh.setText(String.valueOf(thanhVien.getNamSinh()));
+            }
         }
-
-        view1.findViewById(R.id.btnCancle_ql_NhanVien).setOnClickListener(v -> alertDialog.dismiss());
-
-        view1.findViewById(R.id.btnSave_ql_NhanVien).setOnClickListener(v -> {
-            String hoTen = edt_hoTen.getText().toString();
-            String namSinh = edt_namSinh.getText().toString();
-
-            if (validate(hoTen, namSinh)) {
+        view1.findViewById(R.id.btnSave_ql_ThanhVien).setOnClickListener(v -> {
+            strHoten = edt_hoten.getText().toString().trim();
+            strNamSinh = edt_namsinh.getText().toString().trim();
+            if (validate(strHoten, strNamSinh)) {
                 if (type == 0) {
-                    ThanhVien newthanhvien = new ThanhVien();
-                    newthanhvien.setHoTen(hoTen);
-                    newthanhvien.setNamSinh(namSinh);
-                    if (thanhVienDao.insertData(newthanhvien)) {
-                        Toast.makeText(context, "Thêm thành công", Toast.LENGTH_SHORT).show();
-                        list.add(newthanhvien);
-                        updateList();
-                        alertDialog.dismiss();
-                    } else {
-                        Toast.makeText(context, "Thêm thất bại", Toast.LENGTH_SHORT).show();
+                    ThanhVien thanhVienNew = new ThanhVien();
+                    thanhVienNew.setHoTen(strHoten);
+                    thanhVienNew.setNamSinh(strNamSinh);
+                    try {
+                        if (thanhVienDao.insertData(thanhVienNew)) {
+                            Toast.makeText(context, R.string.add_success, Toast.LENGTH_SHORT).show();
+                            list.add(thanhVienNew);
+                            alertDialog.dismiss();
+                            thanhVienAdapter.notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(context, R.string.add_not_success, Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, "Lỗi thao tác Database: ", e);
+                        Toast.makeText(context, R.string.add_not_success, Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    thanhVien.setHoTen(hoTen);
-                    thanhVien.setNamSinh(namSinh);
-
-                    if (thanhVienDao.Update(thanhVien)) {
-                        Toast.makeText(context, "Sửa thành công", Toast.LENGTH_SHORT).show();
-                        updateList();
-                        alertDialog.dismiss();
-                    } else {
-                        Toast.makeText(context, "Sửa thất bại", Toast.LENGTH_SHORT).show();
+                    thanhVien.setHoTen(strHoten);
+                    thanhVien.setNamSinh(strNamSinh);
+                    try {
+                        if (thanhVienDao.Update(thanhVien)) {
+                            Toast.makeText(context, R.string.edit_success, Toast.LENGTH_SHORT).show();
+                            Update_List();
+                            alertDialog.dismiss();
+                        } else {
+                            Toast.makeText(context, R.string.edit_not_success, Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, "Lỗi thao tác Database: ", e);
+                        Toast.makeText(context, R.string.edit_not_success, Toast.LENGTH_SHORT).show();
                     }
                 }
             }
+        });
+        view1.findViewById(R.id.btnCancle_ql_ThanhVien).setOnClickListener(v -> {
+            alertDialog.dismiss();
         });
         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         alertDialog.show();
     }
 
-    public boolean validate(String hoTen, String namSinh) {
-        if (hoTen.isEmpty() || namSinh.isEmpty()) {
-            Toast.makeText(getContext(), "Vui lòng cung cấp đủ thông tin", Toast.LENGTH_SHORT).show();
+    private boolean validate(String hoTen, String namSinh) {
+        try {
+            if (hoTen.isEmpty() || namSinh.isEmpty()) {
+                Toast.makeText(getContext(), "Vui lòng không bỏ trống", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            if (!isChuoi(hoTen)) {
+                Toast.makeText(getContext(), "Nhập sai định dạng chuỗi", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            if (Integer.parseInt(namSinh) < 1900 || Integer.parseInt(namSinh) > 2023) {
+                Toast.makeText(getContext(), "Nhập sai định dạng ngày sinh", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Xẩy ra lỗi trong quá trình validate: ", e);
             return false;
         }
         return true;
     }
 
-    public void updateList() {
+    private void Update_List() {
         list.clear();
         list.addAll(thanhVienDao.selectAll());
         thanhVienAdapter.notifyDataSetChanged();

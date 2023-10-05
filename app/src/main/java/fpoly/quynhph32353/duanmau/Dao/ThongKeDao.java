@@ -24,7 +24,7 @@ public class ThongKeDao {
     //Thong ke Top 10
     public ArrayList<Top> getTop() {
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
-        String sql = "SELECT maSach , Count(maSach) as soLuong FROM PhieuMuon GROUP BY maSach ORDER BY soLuong DESC LIMIT 10";
+        String sql = "SELECT maSach ,Count(maSach) as soLuong FROM PhieuMuon GROUP BY maSach ORDER BY soLuong DESC LIMIT 10";
         ArrayList<Top> list = new ArrayList<>();
         SachDao sachDao = new SachDao(context);
         Cursor cursor = sqLiteDatabase.rawQuery(sql, null);
@@ -36,25 +36,41 @@ public class ThongKeDao {
                 top.tenSach = sach.getTenSach();
                 top.soLuong = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("soLuong")));
                 list.add(top);
-            }while (cursor.moveToNext());
+            } while (cursor.moveToNext());
 
         }
         return list;
     }
 
+    //    public int DoanhThu(String tuNgay, String denNgay) {
+//        SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+//        String sql = "SELECT SUM(tienThue) as doanhThu FROM PhieuMuon WHERE ngay BETWEEN ? AND ?";
+//        String dk[] = {tuNgay, denNgay};
+//        ArrayList<Integer> list = new ArrayList<>();
+//        Cursor cursor = sqLiteDatabase.rawQuery(sql, dk);
+//        while (cursor.moveToNext()) {
+//            try {
+//                list.add(Integer.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("doanhThu"))));
+//            } catch (Exception e) {
+//                list.add(0);
+//            }
+//        }
+//        return list.get(0);
+//    }
     public int DoanhThu(String tuNgay, String denNgay) {
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
         String sql = "SELECT SUM(tienThue) as doanhThu FROM PhieuMuon WHERE ngay BETWEEN ? AND ?";
         String dk[] = {tuNgay, denNgay};
-        ArrayList<Integer> list = new ArrayList<>();
+        int doanhThu = 0;
         Cursor cursor = sqLiteDatabase.rawQuery(sql, dk);
-        while (cursor.moveToNext()) {
+        if (cursor.moveToFirst()) {
             try {
-                list.add(Integer.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("doanhThu"))));
+                doanhThu = cursor.getInt(cursor.getColumnIndexOrThrow("doanhThu"));
             } catch (Exception e) {
-                list.add(0);
+                doanhThu = 0;
             }
         }
-        return list.get(0);
+        cursor.close();
+        return doanhThu;
     }
 }

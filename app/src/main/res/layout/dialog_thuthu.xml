@@ -17,7 +17,7 @@
             android:background="@drawable/background_textview"
             android:gravity="center_horizontal"
             android:padding="10dp"
-            android:text="Thành Viên"
+            android:text="Thủ Thư"
             android:textColor="@color/white"
             android:textSize="25sp"
             android:textStyle="bold" />
@@ -29,31 +29,30 @@
             android:padding="@dimen/padding_10dp">
 
             <EditText
-                android:id="@+id/edt_maTV_thanhvien_dialog"
+                android:id="@+id/edt_maTT_thuthu_dialog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Mã số" />
+                android:hint="Mã TT" />
 
             <EditText
-                android:id="@+id/edt_hoTen_thanhvien_dialog"
+                android:id="@+id/edt_hoTen_thuthu_dialog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Họ Tên" />
 
             <EditText
-                android:inputType="number"
-                android:id="@+id/edt_namSinh_thanhvien_dialog"
+                android:inputType="textPassword"
+                android:id="@+id/edt_password_thuthu_dialog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Năm Sinh" />
-
+                android:hint="PassWord" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <Button
-                    android:id="@+id/btnSave_ql_ThanhVien"
+                    android:id="@+id/btnSave_ql_Thuthu"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
@@ -64,7 +63,7 @@
                     app:backgroundTint="@null" />
 
                 <Button
-                    android:id="@+id/btnCancle_ql_ThanhVien"
+                    android:id="@+id/btnCancle_ql_ThuThu"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

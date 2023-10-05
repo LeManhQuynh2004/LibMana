@@ -9,9 +9,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import fpoly.quynhph32353.duanmau.Model.PhieuMuon;
 import fpoly.quynhph32353.duanmau.Model.Sach;
-import fpoly.quynhph32353.duanmau.Model.ThanhVien;
 import fpoly.quynhph32353.duanmau.R;
 
 public class SachSpinner extends BaseAdapter {

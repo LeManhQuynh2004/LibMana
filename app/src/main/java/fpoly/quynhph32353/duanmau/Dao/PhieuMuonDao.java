@@ -6,11 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import fpoly.quynhph32353.duanmau.Database.Db_Helper;
 import fpoly.quynhph32353.duanmau.Model.PhieuMuon;
-import fpoly.quynhph32353.duanmau.Model.TheLoai;
 
 public class PhieuMuonDao {
     Db_Helper dbHelper;
@@ -43,9 +41,8 @@ public class PhieuMuonDao {
         contentValues.put(COLUMN_NGAY,String.valueOf(obj.getNgay()));
         contentValues.put(COLUMN_GIA_THUE, obj.getTienThue());
         contentValues.put(COLUMN_TRA_SACH, obj.getTraSach());
-
         long check = sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
-
+        obj.setMaPM((int) check);
         return check != -1;
     }
 
@@ -90,7 +87,6 @@ public class PhieuMuonDao {
                 list.add(phieuMuon);
             } while (cursor.moveToNext());
         }
-
         cursor.close();
         return list;
     }

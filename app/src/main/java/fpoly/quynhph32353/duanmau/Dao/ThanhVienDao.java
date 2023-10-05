@@ -6,10 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import fpoly.quynhph32353.duanmau.Database.Db_Helper;
-import fpoly.quynhph32353.duanmau.Model.Sach;
 import fpoly.quynhph32353.duanmau.Model.ThanhVien;
 
 public class ThanhVienDao {
