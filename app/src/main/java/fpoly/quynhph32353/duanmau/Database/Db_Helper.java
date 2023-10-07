@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 public class Db_Helper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "LibMana.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
 
     public Db_Helper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -22,10 +22,11 @@ public class Db_Helper extends SQLiteOpenHelper {
         String createTableThuThu = "CREATE TABLE ThuThu (" +
                 "maTT TEXT PRIMARY KEY, " +
                 "hoTen TEXT NOT NULL, " +
-                "matKhau TEXT NOT NULL)";
+                "matKhau TEXT NOT NULL," +
+                "role INTEGER NOT NULL)";
         db.execSQL(createTableThuThu);
 
-        String insertDefaultThuThu = "INSERT INTO ThuThu (maTT, hoTen, matKhau) VALUES ('admin', 'admin', 'admin')";
+        String insertDefaultThuThu = "INSERT INTO ThuThu (maTT, hoTen, matKhau,role) VALUES ('admin', 'lemanhquynh', 'admin',0)";
         db.execSQL(insertDefaultThuThu);
 
         // Tạo bảng thành viên
@@ -76,6 +77,7 @@ public class Db_Helper extends SQLiteOpenHelper {
             onCreate(db);
         }
     }
+
     @Override
     public void onOpen(SQLiteDatabase db) {
         super.onOpen(db);

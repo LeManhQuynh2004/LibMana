@@ -21,6 +21,8 @@ public class ThuThuDao {
 
     public static final String COLUMN_MATKHAU = "matKhau";
 
+    public static final String COLUMN_ROLE = "role";
+
     public ThuThuDao(Context context) {
         dbHelper = new Db_Helper(context);
     }
@@ -31,6 +33,7 @@ public class ThuThuDao {
         contentValues.put(COLUMN_MATT, obj.getMaTT());
         contentValues.put(COLUMN_HO_TEN, obj.getHoTen());
         contentValues.put(COLUMN_MATKHAU, obj.getMatKhau());
+        contentValues.put(COLUMN_ROLE, obj.getRole());
         long check = sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
         return check != -1;
     }
@@ -41,13 +44,15 @@ public class ThuThuDao {
         long check = sqLiteDatabase.delete(TABLE_NAME, COLUMN_MATT + "= ?", dk);
         return check != -1;
     }
+
     public boolean update(ThuThu obj) {
         SQLiteDatabase sqLiteDatabase = dbHelper.getWritableDatabase();
+        String dk[] = {obj.getMaTT()};
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_HO_TEN, obj.getHoTen());
         contentValues.put(COLUMN_MATKHAU, obj.getMatKhau());
-        String dk[] = {obj.getMaTT()};
-        long check = sqLiteDatabase.update(TABLE_NAME,contentValues,COLUMN_MATT + "= ?", dk);
+        contentValues.put(COLUMN_ROLE, obj.getRole());
+        long check = sqLiteDatabase.update(TABLE_NAME, contentValues, COLUMN_MATT + "= ?", dk);
         return check != -1;
     }
 
@@ -71,7 +76,8 @@ public class ThuThuDao {
                 String maTT = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_MATT));
                 String hoTen = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HO_TEN));
                 String matKhau = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_MATKHAU));
-                list.add(new ThuThu(maTT, hoTen, matKhau));
+                int role = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ROLE)));
+                list.add(new ThuThu(maTT, hoTen, matKhau, role));
             } while (cursor.moveToNext());
         }
         return list;
@@ -87,10 +93,11 @@ public class ThuThuDao {
         ArrayList<ThuThu> list = getAll(sql, id);
         return list.get(0);
     }
-    public boolean checkLogin(String username, String password) {
+
+    public boolean checkLogin(String username, String password, String role) {
         SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
-        String sql = "SELECT * FROM ThuThu WHERE " + COLUMN_MATT + "=? AND " + COLUMN_MATKHAU + "=?";
-        String[] selectionArgs = new String[]{username, password};
+        String sql = "SELECT * FROM ThuThu WHERE " + COLUMN_MATT + "=? AND " + COLUMN_MATKHAU + "=? AND " + COLUMN_ROLE + " = ?";
+        String[] selectionArgs = new String[]{username, password, role};
         Cursor cursor = sqLiteDatabase.rawQuery(sql, selectionArgs);
         boolean result = cursor.getCount() > 0;
         return result;

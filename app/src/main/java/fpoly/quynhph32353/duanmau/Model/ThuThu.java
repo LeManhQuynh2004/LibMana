@@ -5,10 +5,13 @@ public class ThuThu {
     private String hoTen;
     private String matKhau;
 
-    public ThuThu(String maTT, String hoTen, String matKhau) {
+    private int role;
+
+    public ThuThu(String maTT, String hoTen, String matKhau,int role) {
         this.maTT = maTT;
         this.hoTen = hoTen;
         this.matKhau = matKhau;
+        this.role = role;
     }
 
     public String getMaTT() {
@@ -33,5 +36,13 @@ public class ThuThu {
 
     public void setMatKhau(String matKhau) {
         this.matKhau = matKhau;
+    }
+
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
     }
 }
