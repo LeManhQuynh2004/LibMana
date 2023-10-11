@@ -151,6 +151,7 @@ public class QlPhieuMuonFragment extends Fragment {
                 SharedPreferences sharedPreferences = getContext().getSharedPreferences("user_use", getContext().MODE_PRIVATE);
                 String maTT = sharedPreferences.getString("username_user", "");
                 phieuMuonNew.setMaTT(maTT);
+                Log.e(TAG, "showAddOrEditDialog: "+ maTT);
 
                 try {
                     if (phieuMuonDao.insert(phieuMuonNew)) {

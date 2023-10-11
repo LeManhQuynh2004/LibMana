@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView txt_user;
 
-    String role;
+    String role,username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +61,8 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new QlPhieuMuonFragment()).commit();
         Intent intent = getIntent();
         role = intent.getStringExtra("role");
-        ReadFile(role);
+        username = intent.getStringExtra("username");
+        ReadFile(username);
         txt_user = navigationView.getHeaderView(0).findViewById(R.id.txt_HeaderTextView);
         txt_user.setText("WelCome " + role);
         if (role != null) {

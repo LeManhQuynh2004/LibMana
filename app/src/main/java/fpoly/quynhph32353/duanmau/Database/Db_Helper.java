@@ -17,7 +17,6 @@ public class Db_Helper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
         // Tạo bảng thủ thư
         String createTableThuThu = "CREATE TABLE ThuThu (" +
                 "maTT TEXT PRIMARY KEY, " +
