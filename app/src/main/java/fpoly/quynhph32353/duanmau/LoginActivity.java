@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -47,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 role_position = position;
                 value_role = list.get(position);
-                Toast.makeText(LoginActivity.this,role_position + value_role, Toast.LENGTH_SHORT).show();
+                Log.e("Err", "onItemSelected: "+value_role);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
