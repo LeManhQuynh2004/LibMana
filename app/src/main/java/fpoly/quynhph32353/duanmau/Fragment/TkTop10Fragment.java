@@ -20,7 +20,6 @@ public class TkTop10Fragment extends Fragment {
     View view;
     ListView listView;
     ThongKeDao thongKeDao;
-
     Top10Adapter top10Adapter;
     ArrayList<Top> list = new ArrayList<>();
 

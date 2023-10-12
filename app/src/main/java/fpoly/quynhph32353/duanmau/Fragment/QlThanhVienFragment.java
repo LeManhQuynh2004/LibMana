@@ -44,7 +44,7 @@ public class QlThanhVienFragment extends Fragment {
     private static final String TAG = "QlThanhVien";
 
     public boolean isChuoi(String str) {
-        return str.matches("[a-z A-Z 0-9]+");
+        return str.matches("[a-z A-Z]+");
     }
 
     @Override
@@ -134,24 +134,25 @@ public class QlThanhVienFragment extends Fragment {
     }
 
     private boolean validate(String hoTen, String namSinh) {
+        boolean isCheck = true;
         try {
             if (hoTen.isEmpty() || namSinh.isEmpty()) {
                 Toast.makeText(getContext(), "Vui lòng không bỏ trống", Toast.LENGTH_SHORT).show();
-                return false;
+                isCheck = false;
             }
             if (!isChuoi(hoTen)) {
                 Toast.makeText(getContext(), "Nhập sai định dạng chuỗi", Toast.LENGTH_SHORT).show();
-                return false;
+                isCheck = false;
             }
             if (Integer.parseInt(namSinh) < 1900 || Integer.parseInt(namSinh) > 2023) {
                 Toast.makeText(getContext(), "Nhập sai định dạng ngày sinh", Toast.LENGTH_SHORT).show();
-                return false;
+                isCheck = false;
             }
         } catch (Exception e) {
             Log.e(TAG, "Xẩy ra lỗi trong quá trình validate: ", e);
-            return false;
+            isCheck = false;
         }
-        return true;
+        return isCheck;
     }
 
     private void Update_List() {

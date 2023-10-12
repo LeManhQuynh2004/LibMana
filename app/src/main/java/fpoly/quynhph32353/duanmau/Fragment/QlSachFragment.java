@@ -183,16 +183,26 @@ public class QlSachFragment extends Fragment {
     }
 
     private boolean validate(String tenSach, String giaSach) {
+        boolean isCheck = true;
         try {
             if (tenSach.isEmpty() || giaSach.isEmpty()) {
                 Toast.makeText(getContext(), "Vui lòng cung cấp đủ thông tin", Toast.LENGTH_SHORT).show();
-                return false;
+                isCheck = false;
+            }
+            if(!isChuoi(tenSach)){
+                Toast.makeText(getContext(), "Vui lòng nhập dúng định dạng !", Toast.LENGTH_SHORT).show();
+                isCheck = false;
+            }
+            if(!isInteger(giaSach)){
+                Toast.makeText(getContext(), "Vui lòng nhập đúng định dạng ", Toast.LENGTH_SHORT).show();
+                isCheck = false;
             }
         } catch (Exception e) {
-            Toast.makeText(getContext(), "Xẩy ra lỗi", Toast.LENGTH_SHORT).show();
-            return false;
+            Log.e(TAG, "validate: "+e);
+            Toast.makeText(getContext(), "Xẩy ra lỗi, Vui lòng thử lại", Toast.LENGTH_SHORT).show();
+            isCheck = false;
         }
-        return true;
+        return isCheck;
     }
 
     public void updateList() {

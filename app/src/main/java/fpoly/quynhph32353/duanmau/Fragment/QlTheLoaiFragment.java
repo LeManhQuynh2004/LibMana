@@ -87,11 +87,7 @@ public class QlTheLoaiFragment extends Fragment {
         });
         mView.findViewById(R.id.btnSave_ql_TheLoai).setOnClickListener(v -> {
             String tenLoai = edt_tenloai.getText().toString();//Lấy input từ người dùng
-            if (tenLoai.isEmpty()) { //kiểm tra xem người dùng có bỏ trống thông tin không
-                Toast.makeText(context, "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
-            } else if (!isChuoi(tenLoai)) { //Check regex chuỗi
-                Toast.makeText(context, "Vui lòng nhập đúng định dạng", Toast.LENGTH_SHORT).show();
-            } else {
+            if (Validate(tenLoai)) {
                 if (type == 0) {
                     TheLoai theLoainew = new TheLoai();
                     theLoainew.setTenLoai(tenLoai);
@@ -129,9 +125,21 @@ public class QlTheLoaiFragment extends Fragment {
         alertDialog.show();
     }
 
-    public void update() {
+    private void update() {
         list.clear();
         list.addAll(theLoaiDao.selectAll());
         theLoaiAdapter.notifyDataSetChanged();
+    }
+
+    private boolean Validate(String username) {
+        boolean isCheck = true;
+        if (username.isEmpty()) { //kiểm tra xem người dùng có bỏ trống thông tin không
+            Toast.makeText(getContext(), "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
+            isCheck = false;
+        } else if (!isChuoi(username)) { //Check regex chuỗi
+            Toast.makeText(getContext(), "Vui lòng nhập đúng định dạng", Toast.LENGTH_SHORT).show();
+            isCheck = false;
+        }
+        return isCheck;
     }
 }

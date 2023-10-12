@@ -84,7 +84,7 @@ public class SachAdapter extends RecyclerView.Adapter<SachAdapter.SachViewHolder
                         Toast.makeText(context, R.string.delete_not_success, Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
-                    Toast.makeText(context, R.string.delete_not_success, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.delete_not_success_for, Toast.LENGTH_SHORT).show();
                 }
             }
         });

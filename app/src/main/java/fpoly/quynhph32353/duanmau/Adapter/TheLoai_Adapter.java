@@ -89,7 +89,7 @@ public class TheLoai_Adapter extends RecyclerView.Adapter<TheLoai_Adapter.TheLoa
                         Toast.makeText(context, R.string.delete_not_success, Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
-                    Toast.makeText(context, R.string.delete_not_success, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.delete_not_success_for, Toast.LENGTH_SHORT).show();
                 }
             }
         });

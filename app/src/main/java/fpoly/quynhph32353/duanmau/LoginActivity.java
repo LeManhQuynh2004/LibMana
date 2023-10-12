@@ -28,6 +28,17 @@ public class LoginActivity extends AppCompatActivity {
     String value_role;
     int role_position;
 
+
+    //Kiem tra do dai username
+    private boolean isLength(String str){
+        return str.matches("[a-z0-9_-]{6,12}$");
+    }
+
+    //Kiem tra ky tu dac biet
+    public boolean isChuoi(String str) {
+        return str.matches("[a-z A-Z 0-9]+");
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,10 +87,8 @@ public class LoginActivity extends AppCompatActivity {
     private void CheckLogin() {
         strUserName = edtUserName.getText().toString().trim();
         strPassWord = edtPassWord.getText().toString().trim();
-        if (strUserName.isEmpty() || strPassWord.isEmpty()) {
-            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-        } else {
-            if ((thuThuDao.checkLogin(strUserName, strPassWord, String.valueOf(role_position))) || (strUserName.equals("admin") && strPassWord.equals("admin") && role_position == 0)){
+        if (Validate(strUserName,strUserName)) {
+            if (thuThuDao.checkLogin(strUserName, strPassWord, String.valueOf(role_position))){
                 ThuThu thuThu = thuThuDao.SelectID(strUserName);
                 if (thuThu.getRole() == 0) {
                     value_role = "admin";
@@ -111,5 +120,20 @@ public class LoginActivity extends AppCompatActivity {
             editor.putInt("ROLE", role_position);
         }
         editor.commit();
+    }
+    private boolean Validate(String username,String passWord){
+        boolean isCheck = true;
+        if(username.isEmpty() || passWord.isEmpty()){
+            Toast.makeText(this, "Vui lòng không bỏ trống", Toast.LENGTH_SHORT).show();
+            isCheck = false;
+        }else if(!isChuoi(strUserName) || !isChuoi(strPassWord)){
+            Toast.makeText(this, "Nhập sai định dạng , không có ký tự đặc biệt", Toast.LENGTH_SHORT).show();
+            isCheck = false;
+        }
+        else if(!isLength(username)){
+            Toast.makeText(this, "Độ dài 6 đến 12 ký tự , không khoảng trắng và không dấu", Toast.LENGTH_SHORT).show();
+            isCheck = false;
+        }
+        return isCheck;
     }
 }
